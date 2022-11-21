@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+
+  nginx:
+      build:
+        context: ./nginx
+        dockerfile: ./nginx.dockerfile 
+      ports:
+      - "80:8181"
+      networks:
+      - minha-network
+      depends_on:
+      - app
+      restart: on-failure
+
+  app:
+    image: amsousa95/flask_steam:latest
+    environment:
+      THEME: light-blue
+      DATABASE_URI: postgresql://db_user:senha_secreta@db:5432/flask_steam
+      SECRET_KEY: secret_key_privada
+    networks:
+    - minha-network
+    depends_on:
+      - db
+    restart: on-failure
+
+  db:
+    image: postgres:13.4-alpine
+    expose:
+      - 5432
+    environment:
+      POSTGRES_USER: db_user
+      POSTGRES_PASSWORD: senha_secreta
+      POSTGRES_DB: flask_steam
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    networks:
+    - minha-network
+    restart: on-failure
+
+volumes:
+  postgres_data:
+
+networks: 
+    minha-network:
+        driver: bridge
+
+

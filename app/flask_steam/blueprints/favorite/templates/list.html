@@ -1,0 +1,38 @@
+<p class="col s4 " title="Buscar valores na API da Steam">
+    <a class="waves-effect waves-light btn right" onclick="search_values()">Exibe valores</a>
+</p>
+
+<h4>Favoritos </h4>
+
+<div class="progress" style="display: none;">
+    <div class="determinate" style="width: 0%"></div>
+</div>
+
+{% for favorite in list_favorites %}
+
+<div class="divider"></div>
+<div class="section">
+    <h5>{{ favorite.name }}</h5>
+
+    <div class="row">
+        <a href="{{ url_for('favorite.game', game_id=favorite.steam_id) }}">
+            <img class="col s4" src="{{ favorite.logo_url }}">
+        </a>
+        
+        <div id="{{ favorite.steam_id }}"></div>
+        <form class="right" action="{{ url_for('favorite.delete_favorite') }}" method="post" >
+            <input name="steam_id" type="hidden" value="{{ favorite.steam_id }}">
+            <button class="waves-effect waves-light btn red accent-3" type="submit">Excluir</button>
+        </form>
+    </div>
+
+    {% endfor %}
+    <div class="divider"></div>
+
+</div>
+
+{% if not list_favorites %}
+<div class="container">
+    <p>Nenhum favorito cadastrado</p>
+</div>
+{% endif %}

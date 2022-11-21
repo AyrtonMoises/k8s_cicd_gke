@@ -1,0 +1,73 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blue
+spec:
+  selector:
+    matchLabels:
+      app: blue
+  template:
+    metadata:
+      labels:
+        app: blue
+    spec:
+      containers:
+      - name: blue
+        image: amsousa95/flask_steam:latest
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: "200m"
+        ports:
+        - containerPort: 5000
+        env:
+          - name: THEME
+            valueFrom:
+              configMapKeyRef:
+                name: blue-configmap
+                key: theme
+          - name: SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: blue-secrets
+                key: SECRET_KEY
+
+          - name: DATABASE_URI
+            valueFrom:
+              secretKeyRef:
+                name: blue-secrets
+                key: DATABASE_URI
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: blue-service
+spec:
+  selector:
+    app: blue
+  ports:
+  - port: 80
+    targetPort: 5000
+
+---
+
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: blue-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: blue
+  minReplicas: 1
+  maxReplicas: 2
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70

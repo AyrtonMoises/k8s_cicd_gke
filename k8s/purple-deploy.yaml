@@ -1,0 +1,73 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: purple
+spec:
+  selector:
+    matchLabels:
+      app: purple
+  template:
+    metadata:
+      labels:
+        app: purple
+    spec:
+      containers:
+      - name: purple
+        image: amsousa95/flask_steam:latest
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: "200m"
+        ports:
+        - containerPort: 5000
+        env:
+          - name: THEME
+            valueFrom:
+              configMapKeyRef:
+                name: purple-configmap
+                key: theme
+          - name: SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: purple-secrets
+                key: SECRET_KEY
+
+          - name: DATABASE_URI
+            valueFrom:
+              secretKeyRef:
+                name: purple-secrets
+                key: DATABASE_URI
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: purple-service
+spec:
+  selector:
+    app: purple
+  ports:
+  - port: 80
+    targetPort: 5000
+
+---
+
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: purple-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: purple
+  minReplicas: 1
+  maxReplicas: 2
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70

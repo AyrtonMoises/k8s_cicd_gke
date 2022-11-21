@@ -1,0 +1,52 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myingress
+  labels:
+    name: myingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    #cert-manager.io/cluster-issuer: "letsencrypt-homolog"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  tls:
+  - hosts:
+    - "purple.flask-steam.tk"
+    secretName: "purple-tls"
+  - hosts:
+    - "blue.flask-steam.tk"
+    secretName: "blue-tls"
+  - hosts:
+    - "flask-steam.tk"
+    secretName: "padrao-tls"
+  rules:
+  - host: "purple.flask-steam.tk"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: purple-service
+            port: 
+              number: 80
+  - host: "blue.flask-steam.tk"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: blue-service
+            port: 
+              number: 80
+  - host: "flask-steam.tk"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: purple-service
+            port:
+              number: 80

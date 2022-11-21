@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: purple-configmap
+data:
+  theme: deep-purple
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: blue-configmap
+data:
+  theme: blue
