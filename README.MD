@@ -38,12 +38,12 @@ gcloud services enable \
 gcloud iam service-accounts create my-service-account
 ```
 
-### Pegar na listagem o email(aquele q gcloud cria automatico) do usuario criado
+### Pegar na listagem o email do usuario recem criado
 ```
 gcloud iam service-accounts list 
 ```
 
-### pegar id do projeto que o cluster pertence caso n saiba
+### Pegar id do projeto que o cluster pertence, comando abaixo para lista via CLI, caso não saiba
 ```
 gcloud projects list --sort-by=projectId --limit=5
 ```
@@ -70,8 +70,8 @@ gcloud projects add-iam-policy-binding my-project \
 gcloud iam service-accounts keys create key.json --iam-account=$SA_EMAIL
 ```
 
-### Armazene a chave da conta de serviço como um segredo chamado GKE_SA_KEY ou copie e jogue para seus secrets:
+### Pegue a chave da conta de serviço como um segredo chamado GKE_SA_KEY e jogue para seus secrets do repositório :
 ```
-export GKE_SA_KEY=$(cat key.json | base64)
+cat key.json | base64
 ```
--APÓS PEGAR O DADO, EXCLUA O ARQUIVO DO REPOSITORIO
+- Remover arquivo de credenciais gerado do repositório após pegar os dados
