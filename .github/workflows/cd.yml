@@ -7,8 +7,8 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-  GKE_CLUSTER: cluster-flask-steam
-  GKE_ZONE: us-central1-c 
+  GKE_CLUSTER: ${{ secrets.GKE_CLUSTER_NAME }}
+  GKE_ZONE: ${{ secrets.GKE_ZONE }}
   DEPLOYMENT_NAME1: blue
   DEPLOYMENT_NAME2: purple
   IMAGE: amsousa95/flask_steam

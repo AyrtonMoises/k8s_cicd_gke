@@ -50,18 +50,18 @@ gcloud projects list --sort-by=projectId --limit=5
 
 ### Comandos para colocar permissões(podem ter mais restritivas q essas)
 ```
-gcloud projects add-iam-policy-binding my-project \
-	--member=serviceAccount:my-service-account@my-project.iam.gserviceaccount.com \
+gcloud projects add-iam-policy-binding my-project-name \
+	--member=serviceAccount:my-service-account@my-project-name.iam.gserviceaccount.com \
 	--role=roles/container.admin
 ```
 ```
-gcloud projects add-iam-policy-binding my-project \
-	--member=serviceAccount:my-service-account@my-project.iam.gserviceaccount.com \
+gcloud projects add-iam-policy-binding my-project-name \
+	--member=serviceAccount:my-service-account@my-project-name.iam.gserviceaccount.com \
 	--role=roles/storage.admin
 ```
 ```
-gcloud projects add-iam-policy-binding my-project \
-	--member=serviceAccount:my-service-account@my-project.iam.gserviceaccount.com \
+gcloud projects add-iam-policy-binding my-project-name \
+	--member=serviceAccount:my-service-account@my-project-name.iam.gserviceaccount.com \
 	--role=roles/container.clusterViewer
 ```
 
